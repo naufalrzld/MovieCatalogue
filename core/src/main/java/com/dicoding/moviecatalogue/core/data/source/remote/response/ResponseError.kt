@@ -9,5 +9,6 @@ data class ResponseError(
     @SerializedName("status_message")
     val message: String,
 
+    @SerializedName("success")
     val success: Boolean
 )

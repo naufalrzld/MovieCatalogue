@@ -1,4 +1,5 @@
 dependencies {
+    implementation "androidx.multidex:multidex:$multidex_version"
     implementation "androidx.core:core-ktx:$coreVersion"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
