@@ -6,10 +6,13 @@ import com.dicoding.moviecatalogue.core.BuildConfig
 import com.dicoding.moviecatalogue.core.data.MovieRepository
 import com.dicoding.moviecatalogue.core.data.source.local.LocalDataSource
 import com.dicoding.moviecatalogue.core.data.source.local.room.MovieDatabase
+import com.dicoding.moviecatalogue.core.data.source.local.room.MovieTvShowDao
 import com.dicoding.moviecatalogue.core.data.source.remote.network.ApiServices
 import com.dicoding.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.dicoding.moviecatalogue.core.domain.repository.IMovieTvShowRepository
 import com.dicoding.moviecatalogue.core.utils.AppExecutors
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -26,10 +29,14 @@ val coreModule = module {
     single<IMovieTvShowRepository> { MovieRepository(get(), get(), get()) }
 }
 
-fun provideDatabase(context: Context) =
-    Room.databaseBuilder(context, MovieDatabase::class.java, "moviedb")
+fun provideDatabase(context: Context): MovieTvShowDao {
+    val passphrase: ByteArray = SQLiteDatabase.getBytes("dicoding".toCharArray())
+    val factory = SupportFactory(passphrase)
+    return Room.databaseBuilder(context, MovieDatabase::class.java, "moviedb.db")
+        .openHelperFactory(factory)
         .build()
-        .academyDao()
+        .movieTvShowDao()
+}
 
 fun provideApiService(): ApiServices {
     val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

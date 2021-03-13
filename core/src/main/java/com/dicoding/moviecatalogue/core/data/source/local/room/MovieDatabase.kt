@@ -6,5 +6,5 @@ import com.dicoding.moviecatalogue.core.data.source.local.entity.MovieTvShowEnti
 
 @Database(entities = [MovieTvShowEntity::class], version = 1, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
-    abstract fun academyDao(): MovieTvShowDao
+    abstract fun movieTvShowDao(): MovieTvShowDao
 }
