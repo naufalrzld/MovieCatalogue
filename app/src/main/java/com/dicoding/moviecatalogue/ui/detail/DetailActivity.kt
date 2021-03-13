@@ -9,8 +9,8 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dicoding.moviecatalogue.BuildConfig
 import com.dicoding.moviecatalogue.R
+import com.dicoding.moviecatalogue.core.BuildConfig
 import com.dicoding.moviecatalogue.core.data.Resource
 import com.dicoding.moviecatalogue.core.domain.model.MovieTvShow
 import com.dicoding.moviecatalogue.databinding.ActivityDetailBinding

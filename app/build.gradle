@@ -21,7 +21,6 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w500\"")
         }
         release {
             minifyEnabled false
