@@ -13,12 +13,14 @@ import com.dicoding.moviecatalogue.core.domain.repository.IMovieTvShowRepository
 import com.dicoding.moviecatalogue.core.utils.AppExecutors
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val coreModule = module {
     single { provideApiService() }
@@ -41,8 +43,19 @@ fun provideDatabase(context: Context): MovieTvShowDao {
 fun provideApiService(): ApiServices {
     val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
+    val hostName = "api.themoviedb.org"
+    val certificatePinner = CertificatePinner.Builder()
+        .add(hostName, "sha256/+vqZVAzTqUP8BGkfl88yU7SQ3C8J2uNEa55B7RZjEg0=")
+        .add(hostName, "sha256/JSMzqOOrtyOT1kmau6zKhgT676hGgczD5VMdRMyJZFA=")
+        .add(hostName, "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+        .add(hostName, "sha256/KwccWaCgrnaw6tsrrSO61FgLacNgG2MMLq8GE6+oP5I=")
+        .build()
+
     val client = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .certificatePinner(certificatePinner)
         .build()
 
     val retrofit = Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
